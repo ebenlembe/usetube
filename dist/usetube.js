@@ -1,10 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchVideo = exports.searchChannel = exports.getVideosFromDesc = exports.getVideoDesc = exports.getVideoDate = exports.getPlaylistVideos = exports.getChannelVideos = exports.getChannelDesc = void 0;
+exports.searchVideo = exports.searchChannel = exports.getVideosFromDesc = exports.getVideoDesc = exports.getVideoDate = exports.getPlaylistVideos = exports.getChannelStreams = exports.getChannelVideos = exports.getChannelDesc = void 0;
 var getChannelDesc_1 = require("./getChannelDesc");
 exports.getChannelDesc = getChannelDesc_1.default;
 var getChannelVideos_1 = require("./getChannelVideos");
 exports.getChannelVideos = getChannelVideos_1.default;
+var getChannelStreams_1 = require("./getChannelStreams");
+exports.getChannelStreams = getChannelStreams_1.default;
 var getPlaylistVideos_1 = require("./getPlaylistVideos");
 exports.getPlaylistVideos = getPlaylistVideos_1.default;
 var getVideoDate_1 = require("./getVideoDate");

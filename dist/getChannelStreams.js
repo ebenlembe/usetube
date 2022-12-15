@@ -37,79 +37,94 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var getData_1 = require("./helpers/getData");
-var findVal_1 = require("./helpers/findVal");
 var formatVideo_1 = require("./helpers/formatVideo");
-function getPlaylistVideos(id, speedDate) {
+var findVal_1 = require("./helpers/findVal");
+function getChannelStreams(id, published_after) {
+    var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var data, apikey, items, token, videos, i, formated, nextData, nextVideos, i, formated, e_1, e_2;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var data, apikey, channel, token, videos, i, video, data_1, newVideos, i, video, e_1, e_2;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    _a.trys.push([0, 15, , 16]);
-                    return [4 /*yield*/, (0, getData_1.default)('https://m.youtube.com/playlist?list=' + id)];
+                    _b.trys.push([0, 15, , 16]);
+                    return [4 /*yield*/, (0, getData_1.default)('https://m.youtube.com/channel/' + id + '/streams')];
                 case 1:
-                    data = _a.sent();
+                    data = _b.sent();
                     apikey = data.apikey;
-                    items = (0, findVal_1.default)(data, 'playlistVideoListRenderer').contents;
+                    channel = data.contents.singleColumnBrowseResultsRenderer.tabs.filter(function (t) { return t.tabRenderer.title === 'Live'; })[0].tabRenderer.content.richGridRenderer.contents;
                     token = (0, findVal_1.default)(data, 'token');
                     videos = [];
                     i = 0;
-                    _a.label = 2;
+                    _b.label = 2;
                 case 2:
-                    if (!(i < items.length)) return [3 /*break*/, 5];
-                    if (!items[i]) return [3 /*break*/, 4];
-                    return [4 /*yield*/, (0, formatVideo_1.default)(items[i], speedDate)];
+                    if (!(i < channel.length)) return [3 /*break*/, 5];
+                    return [4 /*yield*/, (0, formatVideo_1.default)((_a = channel[i].richItemRenderer) === null || _a === void 0 ? void 0 : _a.content, false)];
                 case 3:
-                    formated = _a.sent();
-                    if (formated) {
-                        videos.push(formated);
+                    video = _b.sent();
+                    if (video && video.publishedAt) {
+                        if ((published_after && video.publishedAt.getTime() > published_after.getTime()) || !published_after) {
+                            videos.push(video);
+                        }
                     }
-                    _a.label = 4;
+                    _b.label = 4;
                 case 4:
                     i++;
                     return [3 /*break*/, 2];
                 case 5:
                     if (!token) return [3 /*break*/, 14];
-                    _a.label = 6;
+                    _b.label = 6;
                 case 6:
-                    _a.trys.push([6, 12, , 13]);
+                    _b.trys.push([6, 12, , 13]);
                     return [4 /*yield*/, (0, getData_1.default)('https://www.youtube.com/youtubei/v1/browse?key=' + apikey + '&token=' + token)];
                 case 7:
-                    nextData = _a.sent();
-                    nextVideos = nextData.items;
-                    token = nextData.token;
-                    i = 0;
-                    _a.label = 8;
-                case 8:
-                    if (!(i < nextVideos.length)) return [3 /*break*/, 11];
-                    if (!nextVideos[i]) return [3 /*break*/, 10];
-                    return [4 /*yield*/, (0, formatVideo_1.default)(nextVideos[i], speedDate)];
-                case 9:
-                    formated = _a.sent();
-                    if (formated) {
-                        videos.push(formated);
+                    data_1 = _b.sent();
+                    newVideos = data_1.items;
+                    if (data_1.token === token) {
+                        return [3 /*break*/, 14];
                     }
-                    _a.label = 10;
+                    token = data_1.token;
+                    i = 0;
+                    _b.label = 8;
+                case 8:
+                    if (!(i < newVideos.length)) return [3 /*break*/, 11];
+                    return [4 /*yield*/, (0, formatVideo_1.default)(newVideos[i], false)];
+                case 9:
+                    video = _b.sent();
+                    if (video) {
+                        if (published_after) {
+                            if (video.publishedAt.getTime() > published_after.getTime()) {
+                                videos.push(video);
+                            }
+                            else {
+                                token = '';
+                            }
+                        }
+                        else {
+                            videos.push(video);
+                        }
+                    }
+                    _b.label = 10;
                 case 10:
                     i++;
                     return [3 /*break*/, 8];
                 case 11: return [3 /*break*/, 13];
                 case 12:
-                    e_1 = _a.sent();
-                    console.log('getPlaylistVideos failed');
+                    e_1 = _b.sent();
+                    console.log('getChannelStreams failed');
                     // console.log(e)
                     token = '';
                     return [3 /*break*/, 13];
                 case 13: return [3 /*break*/, 5];
                 case 14: return [2 /*return*/, videos];
                 case 15:
-                    e_2 = _a.sent();
-                    console.log('cannot get playlist ' + id + ', try again');
+                    e_2 = _b.sent();
+                    console.log('cannot get channel streams for id: ' + id + ', try again');
+                    console.log(e_2);
                     return [3 /*break*/, 16];
                 case 16: return [2 /*return*/];
             }
         });
     });
 }
-exports.default = getPlaylistVideos;
-//# sourceMappingURL=getPlaylistVideos.js.map
+exports.default = getChannelStreams;
+//# sourceMappingURL=getChannelStreams.js.map

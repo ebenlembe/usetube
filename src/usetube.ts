@@ -1,5 +1,6 @@
 import getChannelDesc from './getChannelDesc'
 import getChannelVideos from './getChannelVideos'
+import getChannelStreams from './getChannelStreams'
 import getPlaylistVideos from './getPlaylistVideos'
 import getVideoDate from './getVideoDate'
 import getVideoDesc from './getVideoDesc'
@@ -10,6 +11,7 @@ import searchVideo from './searchVideo'
 export {
   getChannelDesc,
   getChannelVideos,
+  getChannelStreams,
   getPlaylistVideos,
   getVideoDate,
   getVideoDesc,
