@@ -7,7 +7,7 @@ export default async function getChannelStreams(id: string, published_after?: Da
   try {
     const data: any = await getData('https://m.youtube.com/channel/'+id+'/streams')
     const apikey = data.apikey
-    let tabs: any[] = data.contents.singleColumnBrowseResultsRenderer.tabs.filter((t) => t.tabRenderer.title === 'Live')
+    const tabs: any[] = data.contents.singleColumnBrowseResultsRenderer.tabs.filter((t) => t.tabRenderer.title === 'Live')
     if (!tabs || !tabs.length) {
       throw new Error('No livestreams found')
     }
