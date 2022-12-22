@@ -42,7 +42,7 @@ var findVal_1 = require("./helpers/findVal");
 function getChannelStreams(id, published_after) {
     var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var data, apikey, channel, token, videos, i, video, data_1, newVideos, i, video, e_1, e_2;
+        var data, apikey, tabs, channel, token, videos, i, video, data_1, newVideos, i, video, e_1, e_2;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -51,7 +51,11 @@ function getChannelStreams(id, published_after) {
                 case 1:
                     data = _b.sent();
                     apikey = data.apikey;
-                    channel = data.contents.singleColumnBrowseResultsRenderer.tabs.filter(function (t) { return t.tabRenderer.title === 'Live'; })[0].tabRenderer.content.richGridRenderer.contents;
+                    tabs = data.contents.singleColumnBrowseResultsRenderer.tabs.filter(function (t) { return t.tabRenderer.title === 'Live'; });
+                    if (!tabs || !tabs.length) {
+                        throw new Error('No livestreams found');
+                    }
+                    channel = tabs[0].tabRenderer.content.richGridRenderer.contents;
                     token = (0, findVal_1.default)(data, 'token');
                     videos = [];
                     i = 0;
