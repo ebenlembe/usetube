@@ -11,7 +11,7 @@ export default async function getChannelStreams(id: string, published_after?: Da
     if (!tabs || !tabs.length) {
       throw new Error('No livestreams found')
     }
-    const channel = tabs[0].tabRenderer.content.richGridRenderer.contents
+    const channel = tabs[0].tabRenderer.content.richGridRenderer?.contents || []
     let token: string = findVal(data, 'token')
     let videos: Video[] = []
     for(let i = 0; i < channel.length; i++) {

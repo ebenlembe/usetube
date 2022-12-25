@@ -40,60 +40,60 @@ var getData_1 = require("./helpers/getData");
 var formatVideo_1 = require("./helpers/formatVideo");
 var findVal_1 = require("./helpers/findVal");
 function getChannelStreams(id, published_after) {
-    var _a;
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function () {
         var data, apikey, tabs, channel, token, videos, i, video, data_1, newVideos, i, video, e_1, e_2;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
+        return __generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
-                    _b.trys.push([0, 15, , 16]);
+                    _c.trys.push([0, 15, , 16]);
                     return [4 /*yield*/, (0, getData_1.default)('https://m.youtube.com/channel/' + id + '/streams')];
                 case 1:
-                    data = _b.sent();
+                    data = _c.sent();
                     apikey = data.apikey;
                     tabs = data.contents.singleColumnBrowseResultsRenderer.tabs.filter(function (t) { return t.tabRenderer.title === 'Live'; });
                     if (!tabs || !tabs.length) {
                         throw new Error('No livestreams found');
                     }
-                    channel = tabs[0].tabRenderer.content.richGridRenderer.contents;
+                    channel = ((_a = tabs[0].tabRenderer.content.richGridRenderer) === null || _a === void 0 ? void 0 : _a.contents) || [];
                     token = (0, findVal_1.default)(data, 'token');
                     videos = [];
                     i = 0;
-                    _b.label = 2;
+                    _c.label = 2;
                 case 2:
                     if (!(i < channel.length)) return [3 /*break*/, 5];
-                    return [4 /*yield*/, (0, formatVideo_1.default)((_a = channel[i].richItemRenderer) === null || _a === void 0 ? void 0 : _a.content, false)];
+                    return [4 /*yield*/, (0, formatVideo_1.default)((_b = channel[i].richItemRenderer) === null || _b === void 0 ? void 0 : _b.content, false)];
                 case 3:
-                    video = _b.sent();
+                    video = _c.sent();
                     if (video && video.publishedAt) {
                         if ((published_after && video.publishedAt.getTime() > published_after.getTime()) || !published_after) {
                             videos.push(video);
                         }
                     }
-                    _b.label = 4;
+                    _c.label = 4;
                 case 4:
                     i++;
                     return [3 /*break*/, 2];
                 case 5:
                     if (!token) return [3 /*break*/, 14];
-                    _b.label = 6;
+                    _c.label = 6;
                 case 6:
-                    _b.trys.push([6, 12, , 13]);
+                    _c.trys.push([6, 12, , 13]);
                     return [4 /*yield*/, (0, getData_1.default)('https://www.youtube.com/youtubei/v1/browse?key=' + apikey + '&token=' + token)];
                 case 7:
-                    data_1 = _b.sent();
+                    data_1 = _c.sent();
                     newVideos = data_1.items;
                     if (data_1.token === token) {
                         return [3 /*break*/, 14];
                     }
                     token = data_1.token;
                     i = 0;
-                    _b.label = 8;
+                    _c.label = 8;
                 case 8:
                     if (!(i < newVideos.length)) return [3 /*break*/, 11];
                     return [4 /*yield*/, (0, formatVideo_1.default)(newVideos[i], false)];
                 case 9:
-                    video = _b.sent();
+                    video = _c.sent();
                     if (video) {
                         if (published_after) {
                             if (video.publishedAt.getTime() > published_after.getTime()) {
@@ -107,13 +107,13 @@ function getChannelStreams(id, published_after) {
                             videos.push(video);
                         }
                     }
-                    _b.label = 10;
+                    _c.label = 10;
                 case 10:
                     i++;
                     return [3 /*break*/, 8];
                 case 11: return [3 /*break*/, 13];
                 case 12:
-                    e_1 = _b.sent();
+                    e_1 = _c.sent();
                     console.log('getChannelStreams failed');
                     // console.log(e)
                     token = '';
@@ -121,7 +121,7 @@ function getChannelStreams(id, published_after) {
                 case 13: return [3 /*break*/, 5];
                 case 14: return [2 /*return*/, videos];
                 case 15:
-                    e_2 = _b.sent();
+                    e_2 = _c.sent();
                     console.log('cannot get channel streams for id: ' + id + ', try again');
                     console.log(e_2);
                     return [3 /*break*/, 16];
